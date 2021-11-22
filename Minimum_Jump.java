@@ -17,7 +17,7 @@ class Minimum_Jump
         
         for (int i = 1; i < n; i++) {
             
-            if (i == arr.length - 1)
+            if (i == n - 1)
                 return jump;
  
             maxReach = Math.max(maxReach, i + arr[i]);
