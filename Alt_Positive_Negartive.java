@@ -53,3 +53,45 @@ class Alt_Positive_Negartive {
         return -1;
     }
 }
+
+/*
+class Solution2 {
+	static void rearrange(int arr[], int n) {
+		ArrayList<Integer> positive = new ArrayList<>();
+		ArrayList<Integer> negative = new ArrayList<>();
+		for (int i = 0; i < n; i++) {
+			if (arr[i] >= 0) {
+				positive.add(arr[i]);
+			} else {
+				negative.add(arr[i]);
+			}
+		}
+		int pos = 0;
+		int neg = 0;
+		int po = positive.size();
+		int ne = negative.size();
+		for (int j = 0; j < n; j++) {
+			if (j == 0) {
+				if (po > 0) {
+					arr[j] = positive.get(pos++);
+				} else {
+					arr[j] = negative.get(neg++);
+				}
+			} 
+			else if (j % 2 != 0 && neg < ne) {
+				arr[j] = negative.get(neg++);
+			} 
+			else if (j % 2 == 0 && pos < po) {
+				arr[j] = positive.get(pos++);
+			} 
+			else if (pos == positive.size() && neg < ne) {
+				findNegative(arr, j, negative,neg, ne);
+				return;
+			} 
+			else if (neg == negative.size() && pos < po) {
+				findPositive(arr, j, positive,pos, po);
+				return;
+			}
+		}
+	}
+*/
