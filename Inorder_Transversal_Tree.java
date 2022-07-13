@@ -56,7 +56,35 @@ class Solution {
 
 
 /*
+// Iteration
+// Method - 1
+	public static void inorder(Node root) {
+
+		Stack<Node> stack = new Stack<Node>();
+		//Node temp = root;
+		Node curr = root;
+		
+		while (!stack.isEmpty() || curr != null) {
+			
+			
+			if (curr != null) {
+				stack.push(curr);
+				curr = curr.left;
+				
+			}
+			else {
+				curr = stack.pop();
+				System.out.print(curr.data + " ");
+				
+				curr = curr.right;
+				
+			}
+		}
+	}
+
+
 //Iteration
+//Method - 2
 public static void inorder(Node root) {
 
 		Stack<Node> stack = new Stack<Node>();
