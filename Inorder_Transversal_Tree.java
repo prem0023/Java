@@ -14,7 +14,8 @@ class Node {
 }
 
 class Solution {
-
+	
+	//Recursion
     public static void inorder(Node root) {
     	
     	if(root == null)
@@ -52,3 +53,41 @@ class Solution {
         inorder(root);
     }
 }
+
+
+/*
+//Iteration
+public static void inorder(Node root) {
+
+		Stack<Node> stack = new Stack<Node>();
+		Node temp = root;
+		stack.push(temp);
+
+		while (!stack.isEmpty()) {
+			Node t = stack.peek();
+			if (t.left != null)
+				stack.push(t.left);
+			else {
+				t = stack.pop();
+				System.out.print(t.data + " ");
+				if (t.right != null) {
+					stack.push(t.right);
+					continue;
+				}
+				if (stack.isEmpty())
+					return;
+				t = stack.pop();
+				System.out.print(t.data + " ");
+				while (t.right == null) {
+					if (stack.isEmpty())
+						return;
+					t = stack.pop();
+					System.out.print(t.data + " ");
+				}
+
+				stack.push(t.right);
+			}
+		}
+	}
+	
+*/
