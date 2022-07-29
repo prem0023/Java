@@ -41,3 +41,29 @@ class Solution {
 
     }
 }
+
+
+
+
+// For checking Duplicate Parenthesis Combination
+
+	static boolean isDuplicateParenthesis(String s) {
+		int c = 0;
+		int n = s.length();
+		int i = 0;
+		
+		while(i<n) {
+			if(s.charAt(i) == '(')
+				c++;
+			else if(s.charAt(i) == ')')
+				c--;
+			
+			if(c <0)
+				return true;
+			i++;
+		}
+		if(c != 0)
+			return true;
+		
+		return false;
+	}
