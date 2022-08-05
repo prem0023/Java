@@ -43,7 +43,7 @@ class Solution {
 		
 		int S[] = {2,5,3,6};
 	    
-		System.out.println(rodCutting(S, S.length, 10));
+		System.out.println(count(S, S.length, 10));
 		
 	}
 }
