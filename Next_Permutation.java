@@ -1,3 +1,51 @@
+// Method 1
+
+class Solution{
+    static List<Integer> nextPermutation(int N, int arr[]){
+        // code here
+        List<Integer> list = new ArrayList<Integer>();
+        
+        int a = arr[N-1];
+        int i = 0;
+        
+        for(i=N-2; i>=0; i--){
+            if(a>arr[i])
+                break;
+            else
+                a = arr[i];
+        }
+        
+        if(i<0){
+            for(i=N-1; i>=0; i--){
+                list.add(arr[i]);
+            }
+            return list;
+        }
+        
+        a = arr[i];
+   
+        for(int j=0;j<i;j++)
+            list.add(arr[j]);
+        
+        for(int j=N-1; j>i;j--){
+            if(arr[j] > a){
+                arr[i] = arr[j];
+                arr[j] = a;
+                break;
+            }
+        }
+        list.add(arr[i]);
+        
+        for(int j=N-1; j>i;j--)
+            list.add(arr[j]);
+            
+    
+        return list;
+    }
+}
+
+/*
+//Mathod 2
 class Next_Permutation {
     public void nextPermutation(int[] nums) {
         int n = nums.length;
@@ -54,7 +102,8 @@ class Next_Permutation {
     }
 }
 
-/*
+
+// Mrthod 3
 class Solution {
     public void nextPermutation(int[] nums) {
          //1 3 5 4 2 -> i=3, j=4; 1 4 5 3 2
