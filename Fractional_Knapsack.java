@@ -1,5 +1,41 @@
 // Fractional Knapsack -- Greedy Method
 
+class Solution
+{
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n) 
+    {
+        // Your code here
+        
+        Arrays.sort(arr, (item1, item2) -> {
+            double x = (double)item2.value/item2.weight;
+            double y = (double)item1.value/item1.weight;
+            
+            return x > y ? 1 : -1;
+        });
+
+        // for(Item i : arr)
+        //     System.out.println("Value : " +i.value + " Weight : " + i.weight);
+            
+        double sum = 0;
+        int i = 0;
+        
+        while(W != 0 && i < n){
+            if(W >=  arr[i].weight){
+                sum = sum + arr[i].value;
+                W -= arr[i].weight;
+            }
+            else{
+                sum = sum + (double)(W*arr[i].value)/arr[i].weight;
+                break;
+            }
+            i++;
+        }
+        return sum;
+    }
+}
+
+/*
 class Pair implements Comparable<Pair>{
     double ratio;
     int index;
@@ -13,32 +49,4 @@ class Pair implements Comparable<Pair>{
         else return 0;
     }
 }
-class Solution
-{
-    //Function to get the maximum total value in the knapsack.
-    double fractionalKnapsack(int W, Item arr[], int n) 
-    {
-        Pair[] p=new Pair[n];
-        
-        for(int i=0;i<n;i++){
-            double r=arr[i].value*1.0/arr[i].weight*1.0;
-            p[i]=new Pair(r,i);
-        }
-        Arrays.sort(p);
-        
-        int i=0;
-        double maxVal=0;
-        while(i<n && W>0){
-            if((arr[p[i].index].weight) < W){
-                maxVal+=arr[p[i].index].value;
-                W-=arr[p[i].index].weight;
-            }else{
-                maxVal+=p[i].ratio*W;
-                W=0;
-            }
-            i++;
-        }
-        return maxVal;
-        
-    }
-}
+*/
