@@ -68,3 +68,27 @@ class Solution
         return list;
     }
 }
+
+/*
+//Method 2
+class Tree
+{
+    //Function to return list containing elements of left view of binary tree.
+    ArrayList<Integer> leftView(Node root)
+    {
+      // Your code here
+      ArrayList<Integer> list = new ArrayList<>();
+      leftView(root,list,0);
+           return list;
+    }
+    public void leftView(Node root,ArrayList<Integer> list,int level){
+        if(root==null)
+            return ;
+        if(list.size()==level)
+            list.add(root.data);
+        
+        leftView(root.left,list,level+1);
+        leftView(root.right,list,level+1);
+    }
+}
+*/
