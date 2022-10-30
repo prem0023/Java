@@ -30,19 +30,13 @@ class GFG {
 class Solution {
     static int canReach(int[] A, int N) {
         // code here
-        int jump = 0;
         int currstep = 0;
         int maxreach = 0;
-        int currreach = 0;
         
         while(currstep <= maxreach && currstep < N){
             if(currstep + A[currstep] > maxreach)
                 maxreach = currstep + A[currstep];
-            
-            if(currstep == currreach){
-                currreach = maxreach;
-                jump++;
-            }
+
             currstep++;
         }
         if(maxreach >= N-1)
