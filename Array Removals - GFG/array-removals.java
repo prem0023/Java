@@ -55,3 +55,30 @@ class Solution {
         return n - interval;
     }
 }
+
+// Method 2
+
+/*
+class Solution {
+    int removals(int[] arr, int n, int k) {
+        // code here
+        Arrays.sort(arr);
+        
+        int j = 0;
+        int interval = 1;
+        
+        for(int i=1; i<n; i++){
+            if(arr[i]-arr[j] > k){
+                if(i != j && i-j > interval)
+                    interval = i-j;
+                j++;
+                i--;
+            }
+        }
+        if(arr[n-1] - arr[j] <= k && n-j > interval)
+        	interval = n-j;
+        
+        return n - interval;
+    }
+}
+*/
