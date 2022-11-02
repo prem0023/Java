@@ -37,18 +37,20 @@ class Solution {
         Arrays.sort(arr);
         
         int j = 0;
+        int c = 1;
         int interval = 1;
         
         for(int i=1; i<n; i++){
-            if(arr[i]-arr[j] > k){
-                if(i != j && i-j > interval)
-                    interval = i-j;
+            if(arr[i]-arr[j] <= k){
+                c++;
+                if(interval < c)
+                    interval = c;
+            }
+            else{
                 j++;
-                i--;
+                // i--;
             }
         }
-        if(arr[n-1] - arr[j] <= k && n-j > interval)
-        	interval = n-j;
         
         return n - interval;
     }
