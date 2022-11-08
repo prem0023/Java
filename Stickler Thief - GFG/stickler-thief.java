@@ -66,3 +66,29 @@ class Solution
         return dp[n];
     }
 }
+
+/*
+
+class Solution
+{
+    //Function to find the maximum money the thief can get.
+    public int FindMaxSum(int arr[], int n)
+    {
+        // Your code here
+        
+        int prev2=0,prev1=arr[0];
+        
+        for(int i=1;i<n;i++){
+            int pick=arr[i]+prev2;
+            int not_pick=prev1;
+            
+            int curr=Math.max(pick,not_pick);
+            prev2=prev1;
+            prev1=curr;
+        }
+        
+        return prev1;
+    }
+}
+
+*/
