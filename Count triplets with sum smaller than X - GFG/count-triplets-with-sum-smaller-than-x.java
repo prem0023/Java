@@ -32,10 +32,8 @@ class Solution
                     j++;
                     k = n-1;
                 }
-                else{
+                else
                     k--;
-                    // j = i+1;
-                }
             }
         }
         return count;
