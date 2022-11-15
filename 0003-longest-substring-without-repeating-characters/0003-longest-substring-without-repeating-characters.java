@@ -3,9 +3,10 @@ class Solution {
         
         int l = 0;
         int max = 0;
+        int n = s.length();
         HashMap<Character, Integer> map = new HashMap<>();
         
-        for(int i=0; i<s.length(); i++){
+        for(int i=0; i<n; i++){
             if(!map.containsKey(s.charAt(i)))
                map.put(s.charAt(i), 1);
             else{
@@ -27,8 +28,8 @@ class Solution {
                 }
             }  
         }
-        if(s.length()-l > max)
-            max = s.length() - l;
+        if(n-l > max)
+            max = n - l;
         
         return max;
     }
