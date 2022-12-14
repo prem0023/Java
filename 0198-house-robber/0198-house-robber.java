@@ -1,24 +1,57 @@
 class Solution {
-    public int rob(int[] num) {
-        int prevNo = 0;
-        int prevYes = 0;
-        for (int n : num) {
-            int temp = prevNo;
-            prevNo = Math.max(prevNo, prevYes);
-            prevYes = n + temp;
+    public int rob(int[] nums) {
+        int temp,max,max1;
+        if(nums.length==1)
+         return nums[0];
+         if(nums.length==2)
+           return Math.max(nums[0],nums[1]);
+        max=nums[0];
+        max1=nums[1];
+        for(int i=2;i<nums.length;i++)
+        {
+            max1=Math.max(max1,max);
+            if(max+nums[i]>=max)
+               max+=nums[i];
+            temp=max;
+            max=max1;
+            max1=temp;
         }
-        return Math.max(prevNo, prevYes);
+        return Math.max(max1,max);
     }
 }
 
 /*
-public int rob(int[] num) {
-    int[][] dp = new int[num.length + 1][2];
-    for (int i = 1; i <= num.length; i++) {
-        dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
-        dp[i][1] = num[i - 1] + dp[i - 1][0];
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n+1];
+        
+        for(int i = 0; i<=n; i++)
+            dp[i] = -1;
+        
+        return getMaxMoney(nums, dp, 0, n);  
     }
-    return Math.max(dp[num.length][0], dp[num.length][1]);
+    
+    int getMaxMoney(int[] nums, int[] dp, int prevIncluded, int n){
+        if(n == 0)
+            return 0;
+        
+        // if(dp[n] != -1)
+        //     return dp[n];
+        
+        int maxMoney = 0;
+        
+        if(prevIncluded == 0){
+            int included = nums[n-1] + getMaxMoney(nums, dp, 1, n-1);
+            int excluded = getMaxMoney(nums, dp, 0, n-1);
+            maxMoney = Math.max(included, excluded);
+        }
+        else
+            maxMoney = getMaxMoney(nums, dp, 0, n-1);
+        
+        dp[n] = maxMoney;
+        
+        return maxMoney;
+    }
 }
-
 */
