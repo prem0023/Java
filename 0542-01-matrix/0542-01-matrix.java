@@ -1,3 +1,58 @@
+class Pair{
+    int x;
+    int y;
+    Pair(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class Solution { // 5 ms, faster than 99.66%
+    public int[][] updateMatrix(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int[][] ans = new int[n][m];
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j] != 0)
+                    ans[i][j] = 10001;
+            }
+        }
+        
+        for(int x=0; x<=n+m-2; x++){
+            int count = 0;
+            for(int i=0; i<n; i++){
+                for(int j=0; j<m; j++){
+                    if(ans[i][j] == x){
+                        if(i>0 && ans[i-1][j] > x+1){
+                            count++;
+                            ans[i-1][j] = x+1;
+                        }
+                        if(i+1<n && ans[i+1][j] > x+1){
+                            count++;
+                            ans[i+1][j] = x+1;
+                        }
+                        if(j>0 && ans[i][j-1] > x+1){
+                            count++;
+                            ans[i][j-1] = x+1;
+                        }
+                        if(j+1<m && ans[i][j+1] > x+1){
+                            count++;
+                            ans[i][j+1] = x+1;
+                        }
+                    }
+                }
+            }
+            if(count == 0)
+                return ans;
+        }
+            
+        return ans;
+    }
+}
+
+/*
 class Solution { // 5 ms, faster than 99.66%
     public int[][] updateMatrix(int[][] mat) {
         int m = mat.length, n = mat[0].length, INF = m + n; // The distance of cells is up to (M+N)
@@ -23,7 +78,7 @@ class Solution { // 5 ms, faster than 99.66%
     }
 }
 
-/*
+
 class Pair{
     int x;
     int y;
