@@ -1,12 +1,3 @@
-class Pair{
-    int x;
-    int y;
-    Pair(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-}
-
 class Solution {
     public int numEnclaves(int[][] a) {
         int n = a.length;
