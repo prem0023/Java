@@ -17,15 +17,6 @@ class Solution {
             if(!visited[n-1][j] && a[n-1][j] == 1)
                 DFS(a, visited, n-1, j, n, m);
         }
-        // for(int i=0; i<n; i++){
-        //     for(int j=0; j<m; j++){
-        //         if(i == 0 || j == 0 || i == n-1 || j == m-1){
-        //             if(a[i][j] == 1 && !visited[i][j]){
-        //                 DFS(a, visited, i, j, n, m);
-        //             }
-        //         }
-        //     }
-        // }
         
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
