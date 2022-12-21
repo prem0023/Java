@@ -46,40 +46,42 @@ class Solution {
     List<Integer> eventualSafeNodes(int V, List<List<Integer>> adj) {
 
         // Your code here
-        boolean[] path = new boolean[V];
-        boolean[] visited = new boolean[V];
-        List<Integer> ans = new ArrayList<>();
+        int[] outdegree = new int[V];
+        Queue<Integer> queue = new LinkedList<>();
+        List<Integer> topo = new ArrayList<>(V);
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
         
         for(int i=0; i<V; i++){
-            if(!visited[i])
-                DFS(adj, path, visited, i, V);
+            outdegree[i] = outdegree[i] + adj.get(i).size();
+            for(int x : adj.get(i)){
+                if(map.containsKey(x))
+                    map.get(x).add(i);
+                else{
+                    ArrayList<Integer> templist = new ArrayList<>();
+                    templist.add(i);
+                    map.put(x, templist);
+                }
+            }
         }
         
         for(int i=0; i<V; i++){
-            if(!path[i])
-                ans.add(i);
+            if(outdegree[i] == 0)
+                queue.offer(i);
         }
-        return ans;
-    }
-    
-    boolean DFS(List<List<Integer>> adj, boolean[] path, boolean[] visited, int i, int V){
         
-        visited[i] = true;
-        path[i] = true;
-        
-        for(int x : adj.get(i)){
-            if(!visited[x]){
-                if(DFS(adj, path, visited, x, V))
-                    path[x] = false;
-                else
-                    return false;
-            }
-            else{
-                if(path[x])
-                    return false;
+        while(!queue.isEmpty()){
+            int i = queue.poll();
+            topo.add(i);
+            if(map.containsKey(i)){
+                for(int x : map.get(i)){
+                    outdegree[x]--;
+                    if(outdegree[x] == 0)
+                        queue.offer(x);
+                }
             }
         }
-        path[i] = false;
-        return true;
+        
+        Collections.sort(topo);
+        return topo;
     }
 }
