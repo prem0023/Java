@@ -89,7 +89,7 @@ class Solution
         // Write your code here
         HashMap<Character, ArrayList<Character>> map = new HashMap<>();
         Queue<Character> queue = new LinkedList<>();
-        int[] indegree = new int[26];
+        int[] indegree = new int[K];
         String ans = "";
         
         for(int i=1; i<N; i++){
@@ -131,7 +131,7 @@ class Solution
                 indegree[c-'a']++;
             }
         }
-        for(int i=0; i<26; i++){
+        for(int i=0; i<K; i++){
             if(indegree[i] == 0)
                 queue.offer((char)(i+97));
         }
