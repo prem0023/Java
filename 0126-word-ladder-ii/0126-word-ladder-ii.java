@@ -1,67 +1,116 @@
 class Solution {
-    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-        List<List<String>> ans = new ArrayList<>(); 
-        Map<String, Set<String>> reverse = new HashMap<>(); // reverse graph start from endWord
-        Set<String> wordSet = new HashSet<>(wordList); // remove the duplicate words
-        wordSet.remove(beginWord); // remove the first word to avoid cycle path
-        Queue<String> queue = new LinkedList<>(); // store current layer nodes
-        queue.add(beginWord); // first layer has only beginWord
-        Set<String> nextLevel = new HashSet<>(); // store nextLayer nodes
-        boolean findEnd = false; // find endWord flag
-        while (!queue.isEmpty()) { // traverse current layer nodes
-            String word = queue.remove();
-            for (String next : wordSet) {
-                if (isLadder(word, next)) { // is ladder words
-					// construct the reverse graph from endWord
-                    Set<String> reverseLadders = reverse.computeIfAbsent(next, k -> new HashSet<>());
-                    reverseLadders.add(word); 
-                    if (endWord.equals(next)) {
-                        findEnd = true;
-                    }
-                    nextLevel.add(next); // store next layer nodes
+    String b;
+
+    // Create a hashmap of type word->level to get the idea 
+    // on which level the word comes after the transformations.
+
+    HashMap < String, Integer > mpp;
+
+    // A list for storing the final answer.
+    List < List < String >> ans;
+    private void dfs(String word, List < String > seq) {
+
+        // Function for implementing backtracking using the created map
+        // in reverse order to find the transformation sequence in less time.
+
+        // Base condition :
+        // If word equals beginWord, we’ve found one of the sequences
+        // simply reverse the sequence and return. 
+        if (word.equals(b)) {
+
+            // Since java works with reference, create
+            // a duplicate and store the reverse of it
+            List < String > dup = new ArrayList < > (seq);
+            Collections.reverse(dup);
+            ans.add(dup);
+            return;
+        }
+        int steps = mpp.get(word);
+        int sz = word.length();
+
+        // Replace each character of the word with letters from a-z 
+        // and check whether the transformed word is present in the map
+        // and at the previous level or not.
+        for (int i = 0; i < sz; i++) {
+
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                char replacedCharArray[] = word.toCharArray();
+                replacedCharArray[i] = ch;
+                String replacedWord = new String(replacedCharArray);
+                if (mpp.containsKey(replacedWord) &&
+                    mpp.get(replacedWord) + 1 == steps) {
+
+                    seq.add(replacedWord);
+                    dfs(replacedWord, seq);
+
+                    // pop the current word from the back of the queue
+                    // to traverse other possibilities.
+                    seq.remove(seq.size() - 1);
                 }
             }
-            if (queue.isEmpty()) { // when current layer is all visited
-                if (findEnd) break; // if find the endWord, then break the while loop
-                queue.addAll(nextLevel); // add next layer nodes to queue
-                wordSet.removeAll(nextLevel); // remove all next layer nodes in wordSet
-                nextLevel.clear();
+        }
+    }
+    public List < List < String >> findLadders(String beginWord, String endWord,
+        List < String > wordList) {
+
+        // Push all values of wordList into a set
+        // to make deletion from it easier and in less time complexity.
+        Set < String > st = new HashSet < String > ();
+        int len = wordList.size();
+        for (int i = 0; i < len; i++) {
+            st.add(wordList.get(i));
+        }
+
+        // Perform BFS traversal and push the string in the queue
+        // as soon as they’re found in the wordList.
+        Queue < String > q = new LinkedList < > ();
+        b = beginWord;
+        q.add(beginWord);
+        mpp = new HashMap < > ();
+
+        // beginWord initialised with level 1.
+        mpp.put(beginWord, 1);
+        int sizee = beginWord.length();
+        st.remove(beginWord);
+        while (!q.isEmpty()) {
+            String word = q.peek();
+            int steps = mpp.get(word);
+            q.remove();
+
+            // Break out if the word matches the endWord.
+            if (word.equals(endWord)) break;
+
+            // Replace each character of the word with letters from a-z 
+            // and check whether the transformed word is present in the 
+            // wordList or not, if yes then push to queue
+            for (int i = 0; i < sizee; i++) {
+
+                for (char ch = 'a'; ch <= 'z'; ch++) {
+                    char replacedCharArray[] = word.toCharArray();
+                    replacedCharArray[i] = ch;
+                    String replacedWord = new String(replacedCharArray);
+                    if (st.contains(replacedWord) == true) {
+                        q.add(replacedWord);
+                        st.remove(replacedWord);
+
+                        // push the word along with its level
+                        // in the map data structure.
+                        mpp.put(replacedWord, steps + 1);
+                    }
+                }
+
+
             }
         }
-        if (!findEnd) return ans; // if can't reach endWord from startWord, then return ans.
-        Set<String> path = new LinkedHashSet<>();
-        path.add(endWord);
-		// traverse reverse graph from endWord to beginWord
-        findPath(endWord, beginWord, reverse, ans, path); 
+        ans = new ArrayList < > ();
+
+        // If we reach the endWord, we stop and move to step-2
+        // that is to perform reverse dfs traversal.
+        if (mpp.containsKey(endWord) == true) {
+            List < String > seq = new ArrayList < > ();
+            seq.add(endWord);
+            dfs(endWord, seq);
+        }
         return ans;
-    }
-
-
-    private void findPath(String endWord, String beginWord, Map<String, Set<String>> graph,
-                                 List<List<String>> ans, Set<String> path) {
-        Set<String> next = graph.get(endWord);
-        if (next == null) return;
-        for (String word : next) {
-            path.add(word);
-            if (beginWord.equals(word)) {
-                List<String> shortestPath = new ArrayList<>(path);
-                Collections.reverse(shortestPath); // reverse words in shortest path
-                ans.add(shortestPath); // add the shortest path to ans.
-            } else {
-                findPath(word, beginWord, graph, ans, path);
-            }
-            path.remove(word);
-        }
-    }
-
-    private boolean isLadder(String s, String t) {
-        if (s.length() != t.length()) return false;
-        int diffCount = 0;
-        int n = s.length();
-        for (int i = 0; i < n; i++) {
-            if (s.charAt(i) != t.charAt(i)) diffCount++;
-            if (diffCount > 1) return false;
-        }
-        return diffCount == 1;
     }
 }
