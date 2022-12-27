@@ -56,6 +56,9 @@ class Solution {
             int j = pq.poll().src[1];
             int[] temp;
             
+            if(i == n-1 && j == m-1)
+                return ans[n-1][m-1];
+            
             if(i>0 && ans[i-1][j] > Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i-1][j]))){
                 ans[i-1][j] = Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i-1][j]));
                 temp = new int[2];
@@ -85,6 +88,6 @@ class Solution {
                 pq.offer(new Pair(ans[i][j+1], temp));
             }
         }
-        return ans[n-1][m-1];
+        return -1;
     }
 }
