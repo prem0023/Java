@@ -57,7 +57,7 @@ class Solution {
     static int shortestPath(int[][] grid, int[] src, int[] dest) {
 
         // Your code here
-        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x,y) -> x.dist - y.dist);
+        Queue<Pair> pq = new LinkedList<>();
         int n = grid.length;
         int m =  grid[0].length;
         int[][] ans = new int[n][m];
