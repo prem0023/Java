@@ -57,6 +57,9 @@ class Solution {
     static int shortestPath(int[][] grid, int[] src, int[] dest) {
 
         // Your code here
+        if(src[0] == dest[0] && src[1] == dest[1])
+            return 0;
+        
         Queue<Pair> pq = new LinkedList<>();
         int n = grid.length;
         int m =  grid[0].length;
@@ -75,6 +78,9 @@ class Solution {
             int i = pq.peek().src[0];
             int j = pq.poll().src[1];
             int[] temp;
+            
+            if(i == dest[0] && j == dest[1])
+                return ans[i][j];
             
             if(i>0 && grid[i-1][j] == 1 && ans[i-1][j] > dist+1){
                 ans[i-1][j] = dist+1;
@@ -105,9 +111,6 @@ class Solution {
                 pq.offer(new Pair(ans[i][j+1], temp));
             }
         }
-        if(ans[dest[0]][dest[1]] == Integer.MAX_VALUE)
-            return -1;
-        
-        return ans[dest[0]][dest[1]];
+        return -1;
     }
 }
