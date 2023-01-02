@@ -1,6 +1,36 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
         
+        boolean[] visited = new boolean[isConnected.length+1];
+        int count = 0;
+        
+        for(int i=1; i<=isConnected.length; i++){
+            if(!visited[i]){
+                count++;
+                DFS(i, isConnected, visited);
+            }
+        }
+        return count;
+    }
+    
+    void DFS(int curr, int[][] isConnected, boolean[] visited){
+        
+        if(visited[curr])
+            return;
+        
+        visited[curr] = true;
+        
+        for(int i=1; i<=isConnected.length; i++){
+            if(!visited[i] && isConnected[curr-1][i-1] == 1)
+                DFS(i, isConnected, visited);
+        }
+    }
+}
+
+/*
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        
         int n = isConnected.length;
         ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
 		for(int i=0; i<n; i++)
@@ -87,3 +117,4 @@ class DisjointSet {
     }
 }
 
+*/
