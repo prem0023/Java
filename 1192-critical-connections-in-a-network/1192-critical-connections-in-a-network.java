@@ -32,13 +32,12 @@ class Solution {
                 continue;
             if(!vis[x]){
                 dfs(adj, vis, ans, tin, low, x, timer, i);
-                low[i] = Math.min(low[i], low[x]);
+                //low[i] = Math.min(low[i], low[x]);
                 
                 if(low[x] > tin[i])
                     ans.add(Arrays.asList(i, x));
             }
-            else
-                low[i] = Math.min(low[i], low[x]);
+            low[i] = Math.min(low[i], low[x]);
         }
     }
 }
