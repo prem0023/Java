@@ -1,18 +1,29 @@
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        int n = gas.length;
-        int total_surplus = 0;
-        int surplus = 0;
-        int start = 0;
+        // Initialize totalGas and totalCost to 0
+        int totalGas = 0, totalCost = 0;
+        // Iterate through all the gas stations
+        for(int i = 0 ; i<gas.length; i++){
+            // Add the gas and cost at each station to the total
+            totalGas += gas[i];
+            totalCost += cost[i];
+        }
+        // If totalCost is greater than totalGas, it is not possible to complete the circuit
+        if(totalGas < totalCost) return -1;
         
-        for(int i = 0; i < n; i++){
-            total_surplus += gas[i] - cost[i];
-            surplus += gas[i] - cost[i];
-            if(surplus < 0){
-                surplus = 0;
-                start = i + 1;
+        // Initialize remainsGas and start to 0
+        int remainsGas = 0, start = 0;
+        // Iterate through all the gas stations
+        for(int i = 0 ; i < gas.length; i++){
+            // Add the difference between gas and cost at each station to remainsGas
+            remainsGas = remainsGas +(gas[i] - cost[i]);
+            // If remainsGas becomes negative, set start to the next station and reset remainsGas to 0
+            if(remainsGas < 0 ){
+                start = i+1;
+                remainsGas = 0;
             }
         }
-        return (total_surplus < 0) ? -1 : start;
+        // Return the starting station
+        return start;
     }
 }
