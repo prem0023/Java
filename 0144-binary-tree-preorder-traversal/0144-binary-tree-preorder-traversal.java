@@ -14,19 +14,27 @@
  * }
  */
 class Solution {
-    public List<Integer> preorderTraversal(TreeNode node) {
-        List<Integer> list = new LinkedList<Integer>();
-        Stack<TreeNode> rights = new Stack<TreeNode>();
-        while(node != null) {
-            list.add(node.val);
-            if (node.right != null) {
-                rights.push(node.right);
-            }
-            node = node.left;
-            if (node == null && !rights.isEmpty()) {
-                node = rights.pop();
-            }
-        }
-        return list;
-    }
+   public List<Integer> preorderTraversal(TreeNode root) {
+       // Create a list to store the traversal result
+	List<Integer> result = new ArrayList<>();
+	
+       // Call helper method to perform the traversal
+	traversal(root, result);
+	
+       // Return the result
+	return result;
+   }
+   
+   // Helper method to perform the preorder traversal
+   public void traversal(TreeNode root, List<Integer> result) {
+       // Return if the current node is null
+	if(root == null) return;
+	
+       // Add the current node's value to the result list
+	result.add(root.val);
+	
+       // Recursively traverse the left and right subtrees
+	traversal(root.left, result);
+	traversal(root.right, result);
+   }
 }
