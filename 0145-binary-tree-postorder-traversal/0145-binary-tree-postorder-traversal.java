@@ -22,7 +22,7 @@ class Solution {
         stack.push(root);
         while (!stack.isEmpty()) {
             TreeNode cur = stack.pop();
-            ans.addFirst(cur.val);
+            ans.add(cur.val);
             if (cur.left != null) {
                 stack.push(cur.left);
             }
@@ -30,6 +30,7 @@ class Solution {
                 stack.push(cur.right);
             } 
         }
+        Collections.reverse(ans);
         return ans;
     }
 }
