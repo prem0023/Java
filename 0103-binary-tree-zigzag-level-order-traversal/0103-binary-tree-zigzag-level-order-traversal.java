@@ -1,4 +1,4 @@
-/**
+/*
  * Definition for a binary tree node.
  * public class TreeNode {
  *     int val;
@@ -13,29 +13,42 @@
  *     }
  * }
  */
-public class Solution {
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) 
-    {
-        List<List<Integer>> sol = new ArrayList<>();
-        travel(root, sol, 0);
-        return sol;
-    }
-    
-    private void travel(TreeNode curr, List<List<Integer>> sol, int level)
-    {
-        if(curr == null) return;
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        Stack<TreeNode> st1 = new Stack<>();
+        Stack<TreeNode> st2 = new Stack<>();
+        List<List<Integer>> ans = new ArrayList<>();
         
-        if(sol.size() <= level)
-        {
-            List<Integer> newLevel = new LinkedList<>();
-            sol.add(newLevel);
+        if(root == null)
+            return ans;
+        st1.push(root);
+        
+        while(!st1.isEmpty() || !st2.isEmpty()){
+            List<Integer> res = new ArrayList<>();
+            
+            while(!st1.isEmpty()){
+                TreeNode temp = st1.pop();
+                res.add(temp.val);
+                if(temp.left != null)
+                    st2.push(temp.left);
+                if(temp.right != null)
+                    st2.push(temp.right);
+            }
+            if(res.size() > 0)
+                ans.add(res);
+            res = new ArrayList<>();
+            
+            while(!st2.isEmpty()){
+                TreeNode temp = st2.pop();
+                res.add(temp.val);
+                if(temp.right != null)
+                    st1.push(temp.right);
+                if(temp.left != null)
+                    st1.push(temp.left);
+            }
+            if(res.size() > 0)
+                ans.add(res);
         }
-        
-        List<Integer> collection  = sol.get(level);
-        if(level % 2 == 0) collection.add(curr.val);
-        else collection.add(0, curr.val);
-        
-        travel(curr.left, sol, level + 1);
-        travel(curr.right, sol, level + 1);
+        return ans;
     }
 }
