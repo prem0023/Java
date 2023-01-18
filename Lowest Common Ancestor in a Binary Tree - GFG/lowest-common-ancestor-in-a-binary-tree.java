@@ -121,7 +121,6 @@ class Node
 
 class Solution
 {
-    static Node ans = null;
 	static Node lca(Node root, int n1,int n2)
 	{
 		// Your code here
