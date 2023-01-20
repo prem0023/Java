@@ -40,13 +40,28 @@ class Solution {
         TreeNode l = null;
         TreeNode r = null;
         
-        for(int m=i; m<j; m++){
+        int m = i, n = j-1;
+        while(m>=i && m <j && n>= i && n<j){
             if(inorder[m] == x){
                 l = buildtree(inorder, i, m, preorder);
                 r = buildtree(inorder, m+1, j, preorder);
                 break;
             }
+            else if(inorder[n] == x){
+                l = buildtree(inorder, i, n, preorder);
+                r = buildtree(inorder, n+1, j, preorder);
+                break;
+            }
+            m++;
+            n--;
         }
+        // for(int m=i; m<j; m++){
+        //     if(inorder[m] == x){
+        //         l = buildtree(inorder, i, m, preorder);
+        //         r = buildtree(inorder, m+1, j, preorder);
+        //         break;
+        //     }
+        // }
         TreeNode root = new TreeNode(x);
         
         root.left = l;
