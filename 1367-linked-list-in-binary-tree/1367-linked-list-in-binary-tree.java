@@ -24,14 +24,41 @@
  * }
  */
 class Solution {
+    Boolean result = false;
     public boolean isSubPath(ListNode head, TreeNode root) {
-        if (head == null) return true;
-        if (root == null) return false;
-        return dfs(head, root) || isSubPath(head, root.left) || isSubPath(head, root.right);
+        traverse(head, root);
+        return result;
     }
-    private boolean dfs(ListNode head, TreeNode root) {
-        if (head == null) return true;
-        if (root == null) return false;
-        return head.val == root.val && (dfs(head.next, root.left) || dfs(head.next, root.right));
+    
+    private void traverse(ListNode head, TreeNode root) {
+        if(head != null && root != null) {
+            if(head.val == root.val) {
+                validate(head, root);
+            } 
+            if(result)
+                return;
+            else {
+                traverse(head, root.left);
+                traverse(head, root.right);
+
+            }
+        } 
     }
+    
+    private void validate(ListNode head, TreeNode root) {
+        if(head == null) {
+            result = true;
+            return;
+        } else {
+            if(head == null || root == null)
+                return;
+            if(head.val == root.val) {
+                validate(head.next, root.left);
+                validate(head.next, root.right);
+            } else {
+                return;
+            }
+        }
+    }
+    
 }
