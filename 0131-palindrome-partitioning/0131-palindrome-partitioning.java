@@ -1,37 +1,51 @@
 class Solution {
     public List<List<String>> partition(String s) {
-        // Backtracking
-        // Edge case
-        if(s == null || s.length() == 0) return new ArrayList<>();
+        int len = s.length();
+        String[][] store = new String[len][len];
+        for(int i = 0 ; i < len; i++){
+            for(int j = i; j < len ; j++){
+                if(checkPalindrome(s, i, j)){
+                    store[i][j] = s.substring(i, j+1);
+                }
+            }
+        }
         
         List<List<String>> result = new ArrayList<>();
-        helper(s, new ArrayList<>(), result);
+        dfs(result, store, 0, new ArrayList<>());
         return result;
     }
-    public void helper(String s, List<String> step, List<List<String>> result) {
-        // Base case
-        if(s == null || s.length() == 0) {
-            result.add(new ArrayList<>(step));
+    
+    public void dfs( List<List<String>> result,  String[][] store, int pos, List<String> array){
+        if(pos >= store.length){
+            result.add(array);
+        }
+        
+        if(pos == store.length-1){
+            array.add(store[pos][pos]);
+            result.add(array);
             return;
         }
-        for(int i = 1; i <= s.length(); i++) {
-            String temp = s.substring(0, i);
-            if(!isPalindrome(temp)) continue; // only do backtracking when current string is palindrome
-            
-            step.add(temp);  // choose
-            helper(s.substring(i, s.length()), step, result); // explore
-            step.remove(step.size() - 1); // unchoose
+        
+        for(int i = pos; i < store.length; i++){
+            if(store[pos][i] != null){
+                List<String> temp = new ArrayList<>(array);
+                temp.add(store[pos][i]);
+                dfs(result, store, i+1, temp);
+            }
         }
         return;
     }
-    public boolean isPalindrome(String s) {
-        int left = 0, right = s.length() - 1;
-        while(left <= right) {
-            if(s.charAt(left) != s.charAt(right))
+    
+    
+    
+    public boolean checkPalindrome(String s, int start, int end){
+        
+        for(int i = start, j = end; i < j; i++, j--){
+            if(s.charAt(i) != s.charAt(j)){
                 return false;
-            left ++;
-            right --;
+            }
         }
+        
         return true;
     }
 }
