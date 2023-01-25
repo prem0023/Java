@@ -113,10 +113,22 @@ class Solution {
     // Function to return a list containing the inorder traversal of the tree.
     ArrayList<Integer> inOrder(Node root) {
         // Code
-        ArrayList<Integer> in = new ArrayList<>();
-        findinOrder(root, in);
+        ArrayList<Integer> ans = new ArrayList<>();
+        //findinOrder(root, in);
         
-        return in;
+        Stack<Node> st = new Stack<>();
+        Node temp = root;
+        while(temp != null || !st.isEmpty()){
+            while(temp != null){
+                st.push(temp);
+                temp = temp.left;
+            }
+            temp = st.pop();
+            ans.add(temp.data);
+            temp = temp.right;
+        }
+        
+        return ans;
     }
     
     static void findinOrder(Node root, ArrayList<Integer> in){
