@@ -126,34 +126,35 @@ class Solution
     public List<Integer> merge(Node root1,Node root2)
     {
         // Write your code here
+        List<Integer> ans1 = new ArrayList<>();
+        List<Integer> ans2 = new ArrayList<>();
         List<Integer> ans = new ArrayList<>();
-        Queue<Node> q = new LinkedList<>();
-        q.offer(root1);
         
-        inorder(root1, ans);
-        inorder(root2, ans);
+        inorder(root1, ans1);
+        inorder(root2, ans2);
         
-        Collections.sort(ans);
+        mergeList(ans1, ans2, ans);
         
         return ans;
     }
     
-    private Node insert(Node root, int key) {
-        // your code here
-        if(root == null)
-            return new Node(key);
+    private void mergeList(List<Integer> ans1, List<Integer> ans2, List<Integer> ans){
+        int n = ans1.size();
+        int m = ans2.size();
         
-        Node temp = null;
-        if(key < root.data){
-            temp =  insert(root.left, key);
-            root.left = temp;
-        }
-        else{
-            temp =  insert(root.right, key);
-            root.right = temp;
+        int i = 0, j = 0;
+        
+        while(i<n && j<m){
+            if(ans1.get(i) > ans2.get(j))
+                ans.add(ans2.get(j++));
+            else
+                ans.add(ans1.get(i++));
         }
         
-        return root;
+        while(i<n)
+            ans.add(ans1.get(i++));
+        while(j<m)
+            ans.add(ans2.get(j++));
     }
     
     private void inorder(Node root, List<Integer> ans){
