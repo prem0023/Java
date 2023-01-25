@@ -130,16 +130,10 @@ class Solution
         Queue<Node> q = new LinkedList<>();
         q.offer(root1);
         
-        while(!q.isEmpty()){
-            Node temp = q.poll();
-            Node node = insert(root2, temp.data);
-            
-            if(temp.left != null)
-                q.offer(temp.left);
-            if(temp.right != null)
-                q.offer(temp.right);
-        }
+        inorder(root1, ans);
         inorder(root2, ans);
+        
+        Collections.sort(ans);
         
         return ans;
     }
