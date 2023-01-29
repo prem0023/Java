@@ -111,12 +111,13 @@ class Solution
         if(root.data == K)
             return 0;
         
-        int x = minDiff(root.left, K);
+        if(root.data > K){
+            int x = minDiff(root.left, K);
+            return Math.min(x, Math.abs(root.data-K));
+        }
         int y = minDiff(root.right, K);
         
-        x = Math.min(x, y);
-        
-        return Math.min(x, Math.abs(root.data-K));
+        return Math.min(y, Math.abs(root.data-K));
     } 
 }
 
