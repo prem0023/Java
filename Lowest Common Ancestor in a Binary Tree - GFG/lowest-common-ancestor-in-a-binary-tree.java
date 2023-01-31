@@ -132,9 +132,9 @@ class Solution
         
         Node b1 = null, b2 = null;
         
-        if(root.left != null)
+        //if(root.left != null)
             b1 = lca(root.left, n1, n2);
-        if(root.right != null)
+        //if(root.right != null)
             b2 = lca(root.right, n1, n2);
         
         if(b1 != null && b2 != null)
