@@ -138,13 +138,9 @@ class Solution
             minLevel = Math.min(minLevel, level);
             maxLevel = Math.max(maxLevel, level);
             
-            if(map.containsKey(level))
-                map.get(level).add(temp.data);
-            else{
-                List<Integer> l = new ArrayList<>();
-                l.add(temp.data);
-                map.put(level, l);
-                }
+            List<Integer> l = map.getOrDefault(level,new ArrayList<>());
+            l.add(temp.data);
+            map.put(level, l);
             
             if(temp.left != null)
                 q.offer(new Pair(temp.left, level-1));
