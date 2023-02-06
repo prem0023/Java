@@ -1,8 +1,8 @@
 class Tuple
 {
     int x, y;
-    double dist;
-    Tuple(int _x, int _y, double _dist){
+    int dist;
+    Tuple(int _x, int _y, int _dist){
         this.x = _x;
         this.y = _y;
         this.dist = _dist;
@@ -25,7 +25,7 @@ class Solution {
         for(int i=0; i<n; i++){
             int x = points[i][0];
             int y = points[i][1];
-            double dist = Math.sqrt(x*x + y*y);
+            int dist = x*x + y*y;
             
             c++;
             pq.offer(new Tuple(x,y,dist));
