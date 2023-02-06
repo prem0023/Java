@@ -13,13 +13,7 @@ class Solution {
     public int[][] kClosest(int[][] points, int k) {
         int[][] ans = new int[k][2];
         int n = points.length;
-        PriorityQueue<Tuple> pq = new PriorityQueue<>((a,b) -> {
-        	if(b.dist > a.dist)
-        		return 1;
-        	else if(b.dist < a.dist)
-        		return -1;
-        	return 0;
-        });
+        PriorityQueue<Tuple> pq = new PriorityQueue<>((a,b) -> b.dist - a.dist);
         
         int c = 0;
         for(int i=0; i<n; i++){
