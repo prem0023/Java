@@ -9,18 +9,24 @@
  * }
  */
 class Solution {
-    private ArrayList<Integer> range = new ArrayList<>();
+    private ListNode head;
 
     public Solution(ListNode head) {
-        while (head != null) {
-            this.range.add(head.val);
-            head = head.next;
-        }
+        this.head = head;
     }
     
     public int getRandom() {
-        int pick = (int)(Math.random() * this.range.size());
-        return this.range.get(pick);
+        int scope = 1, chosenValue = 0;
+        ListNode curr = this.head;
+        while (curr != null) {
+            // decide whether to include the element in reservoir
+            if (Math.random() < 1.0 / scope)
+                chosenValue = curr.val;
+            // move on to the next node
+            scope += 1;
+            curr = curr.next;
+        }
+        return chosenValue;
     }
 }
 
