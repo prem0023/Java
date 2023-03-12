@@ -13,16 +13,7 @@ class Solution {
             or = or / 10;
         }
 
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n - 1; j++){
-                if(a[j + 1] < a[j]){
-                    int temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
-                }
-
-            }
-    }
+        Arrays.sort(a);
 
         int num1 = 0, num2 = 0;
         for(int i = 0; i < n - 1; i+=2){
