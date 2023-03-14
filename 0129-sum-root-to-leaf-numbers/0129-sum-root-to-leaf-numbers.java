@@ -15,12 +15,21 @@
  */
 class Solution {
     public int sumNumbers(TreeNode root) {
-        return sum(root, 0);
+        if(root == null)
+            return 0;
+        
+        return sumNumbersHelper(root, 0);
     }
-
-    public int sum(TreeNode n, int s){
-        if (n == null) return 0;
-        if (n.right == null && n.left == null) return s*10 + n.val;
-        return sum(n.left, s*10 + n.val) + sum(n.right, s*10 + n.val);
+    
+    private int sumNumbersHelper(TreeNode root, int currSum){
+        if(root == null)
+            return 0;
+        if(root.left == null && root.right == null)
+            return currSum*10 + root.val;
+        
+        int sum1 = sumNumbersHelper(root.left, currSum*10 + root.val);
+        int sum2 = sumNumbersHelper(root.right, currSum*10 + root.val);
+        
+        return sum1 + sum2;
     }
 }
