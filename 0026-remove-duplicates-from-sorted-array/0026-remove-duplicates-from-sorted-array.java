@@ -1,4 +1,3 @@
-/*
 class Solution {
     public int removeDuplicates(int[] nums) {
         int uniqNumIndex = 0;
@@ -14,21 +13,5 @@ class Solution {
         }
         
         return uniqNumIndex+1;
-    }
-}
-*/
-
-class Solution {
-    public int removeDuplicates(int[] nums) {
-        int i,j=1,n,a=0;
-        n=nums.length;
-        a=nums[0];
-        for(i=1;i<n;i++){
-            if(nums[i]!=a){
-                nums[j++]=nums[i];
-                a=nums[i];
-            }
-        }
-        return j;
     }
 }
