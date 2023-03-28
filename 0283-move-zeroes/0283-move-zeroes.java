@@ -12,9 +12,8 @@ class Solution {
                 if(indexNonZero == n)
                     return;
                 
-                int temp = nums[indexNonZero];
-                nums[indexNonZero] = nums[indexZero];
-                nums[indexZero] = temp;
+                nums[indexZero] = nums[indexNonZero];
+                nums[indexNonZero] = 0;
                 indexNonZero++;
             }
             indexZero++;
