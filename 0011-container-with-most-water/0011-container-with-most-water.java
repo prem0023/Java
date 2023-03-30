@@ -4,8 +4,9 @@ class Solution {
         int ans = 0;
         
         while(start < end) {
-            int temp = Math.min(height[start], height[end]) * (end-start);
-            ans = Math.max(ans, temp);
+            int temp = height[start] < height[end] ? height[start] : height[end];
+            // int temp = Math.min(height[start], height[end]) * (end-start);
+            ans = Math.max(ans, temp*(end-start));
             
             if(height[start] < height[end])
                 start++;
