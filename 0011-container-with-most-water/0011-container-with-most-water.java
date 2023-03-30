@@ -6,7 +6,8 @@ class Solution {
         while(start < end) {
             int temp = height[start] < height[end] ? height[start] : height[end];
             // int temp = Math.min(height[start], height[end]) * (end-start);
-            ans = Math.max(ans, temp*(end-start));
+            // ans = Math.max(ans, temp*(end-start));
+            ans = ans > temp*(end-start) ? ans : temp*(end-start);
             
             if(height[start] < height[end])
                 start++;
