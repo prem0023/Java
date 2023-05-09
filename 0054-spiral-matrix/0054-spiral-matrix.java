@@ -1,33 +1,39 @@
 class Solution {
-    boolean[][] visited;
-    int[] x=new int[]{0,1,0,-1};
-    int[] y=new int[]{1,0,-1,0};
-    int[][] matrix;
-    
     public List<Integer> spiralOrder(int[][] matrix) {
-        visited=new boolean[matrix.length][matrix[0].length];
-        this.matrix=matrix;
-        List<Integer> result=new LinkedList<>();
-        spiral(0,0,0,result);
-        return result;
-    }
-    
-    public void spiral(int i,int j,int c,List<Integer> result){
-        result.add(matrix[i][j]);
-        visited[i][j]=true;
-          if(checkValid(i,j,c)){
-            c++;
-            if(c>x.length-1)
-                c=0;
+        List<Integer> result = new ArrayList<>();
+        if (matrix == null || matrix.length == 0) {
+            return result;
         }
-        if(checkValid(i,j,c))
-            return;
-        spiral(i+x[c],j+y[c],c,result);
-    }
-    
-    public boolean checkValid(int i,int j,int c){
-        if(i+x[c]>matrix.length-1 || i+x[c]<0 || j+y[c]>matrix[0].length-1 || j+y[c]<0 || visited[i+x[c]][j+y[c]])   
-            return true;
-        return false;
+        
+        int rows = matrix.length, cols = matrix[0].length;
+        int left = 0, right = cols-1, top = 0, bottom = rows-1;
+        
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                result.add(matrix[top][i]);
+            }
+            top++;
+            
+            for (int i = top; i <= bottom; i++) {
+                result.add(matrix[i][right]);
+            }
+            right--;
+            
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    result.add(matrix[bottom][i]);
+                }
+                bottom--;
+            }
+            
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
+                }
+                left++;
+            }
+        }
+        
+        return result;
     }
 }
