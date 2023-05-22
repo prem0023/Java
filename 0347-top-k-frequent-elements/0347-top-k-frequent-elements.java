@@ -1,39 +1,20 @@
-class Pair
-{
-    int num, freq;
-    Pair(int _num, int _freq){
-        this.num = _num;
-        this.freq = _freq;
-    }
-}
-
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        int n = nums.length;
-        HashMap<Integer, Integer> map = new HashMap<>();
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.freq - b.freq);
-        int[] ans = new int[k];
         
-        for(int i=0; i<n; i++){
-            int count = map.getOrDefault(nums[i], 0);
-            map.put(nums[i], count+1);
+        // Creating a Frequency Table
+        Map<Integer,Integer> map = new HashMap();
+        for(int n : nums){
+            map.put(n,map.getOrDefault(n,0) + 1);
         }
-        
-        int c = 0;
-        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
-            c++;
-            pq.offer(new Pair(entry.getKey(), entry.getValue()));
-            
-            if(c > k){
-                c--;
-                pq.poll();
-            }
+        // Putting values in priority queue 
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b)->map.get(b) - map.get(a));
+        pq.addAll(map.keySet());
+
+        // putting the top k values in array
+        int[] res = new int[k];
+        for(int i = 0;i<k;i++){
+            res[i] = pq.poll();
         }
-        c = 0;
-        while(!pq.isEmpty())
-            ans[c++] = pq.poll().num;
-        
-        return ans;
-        
+        return res;
     }
 }
