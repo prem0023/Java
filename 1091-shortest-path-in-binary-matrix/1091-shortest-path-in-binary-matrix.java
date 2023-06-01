@@ -1,40 +1,38 @@
 class Solution {
     public int shortestPathBinaryMatrix(int[][] grid) {
-        int n = grid.length;
-        if(grid[0][0]==1 || grid[n-1][n-1]==1) {
+        if (grid[0][0] == 1 || grid[grid.length - 1][grid[0].length - 1] == 1) {
             return -1;
         }
-        return bfs(grid,0,0);
-    }
-    private int bfs(int[][] grid,int i,int j) {
-		Deque<int[]> queue = new LinkedList<>();
-		boolean[][] visited = new boolean[grid.length][grid.length];
-		visited[i][j]=true;
-		queue.add(new int[]{i,j});
+        
         int n = grid.length;
-        int[][] dirs = {{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
-        int level=0;
-		while(!queue.isEmpty()) {
-			int size = queue.size();
-            level++;
-            while(size-->0) {
-                int[] curr = queue.poll();
-	    		if(curr[0]==n-1 && curr[1]==n-1) {
-                    return level;
-                }
-                for(int[] dir:dirs) {
-                    int x = dir[0] + curr[0];
-                    int y = dir[1] +curr[1];
-                    if(x<0||y<0||x>=n||y>=n||grid[x][y]==1||visited[x][y]) {
-                        continue;
-                    }
-                    visited[x][y]=true;
-                    queue.add(new int[]{x,y});
-                }
-
+        int[]dx = {-1,0,1};
+        int[]dy = {-1,0,1};
+        
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0, 0, 1});
+        grid[0][0] = 1;
+        
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int x = curr[0];
+            int y = curr[1];
+            int steps = curr[2];
+            
+            if (x == n - 1 && y == n - 1) {
+                return steps;
             }
             
-		}
-		return -1;
-	}
+            for(int i = 0;i<3;i++){
+                for(int j = 0;j<3;j++){
+                    int nx = x + dx[i];
+                    int ny = y + dy[j];
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] == 0) {
+                    queue.offer(new int[]{nx, ny, steps + 1});
+                    grid[nx][ny] = 1;
+                }
+                }
+            }
+        }
+        return -1;
+    }
 }
