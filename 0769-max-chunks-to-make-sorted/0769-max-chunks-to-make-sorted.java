@@ -20,6 +20,6 @@ class Solution {
         return count;
     }
 }
+//Intution: I will check If I am present at the index of max Visited number, if yes then we got the sub array/chunks where all elements till that range are present, hence we got one chunks.
 
-// we will check if max element of a chunk will visited when I am at index of the max num then I can say I have all the element of that range present in that chunks.
-// so I will iterate the array and check if maxNum == i, if yes then increase the count of chunk, also I will check if we got greater number than the max if yes then change the max num
+//Code: I will iterate the array and check if we got greater number than the current max if yes then change the max num. Also check if maxNum == i, if yes then increase the count of chunk, also I will 
