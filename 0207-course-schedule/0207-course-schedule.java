@@ -1,53 +1,34 @@
 class Solution {
-    public boolean canFinish(int n, int[][] prerequisites) {
-        
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-        int m = prerequisites.length;
-        
-        for(int i =0;i<n;i++)
-            graph.add(new ArrayList<>());
-        
-        for(int i =0;i<m;i++){
-            int src = prerequisites[i][1];
-            int nbr = prerequisites[i][0];
-            graph.get(src).add(nbr);
-        }
-        
-        //create a indegree array
-        int [] indegree = new int[n];
-        
-        for(int i =0;i<n;i++){
-            for(int nbr: graph.get(i)){
-                indegree[nbr]++;
+    public boolean detectCycle(List<List<Integer>> v, int src, int[] rst, int[] vis) {
+        vis[src] = 1;
+        rst[src] = 1;
+        for (int x : v.get(src)) {
+            if (vis[x] == 0 && detectCycle(v, x, rst, vis)) {
+                return true;
+            } else if (rst[x] == 1) {
+                return true;
             }
         }
-        //create a queue and put all vertices whose indegree =0
-        Queue<Integer> q = new ArrayDeque<>();
-        for(int i =0;i<n;i++){
-            if(indegree[i]==0){
-                q.add(i);
-            }
-        }
-        //create a answer arraylist
-        ArrayList<Integer> ans = new ArrayList<>();
-        //remove,update and add
-        while(q.size()>0){
-            //remove
-            int node = q.remove();
-            ans.add(node);
-            //update
-            for(int nbr: graph.get(node)){
-                indegree[nbr]--;
-                //add
-                if(indegree[nbr]==0){
-                    q.add(nbr);
-                }
-            }
-            
-        }
-        if(ans.size()==n)
-            return true;
-
+        rst[src] = 0;
         return false;
+    }
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> v = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            v.add(new ArrayList<>());
+        }
+        Stack<Integer> s = new Stack<>();
+        int[] vis = new int[numCourses];
+        int[] rst = new int[numCourses];
+        for (int[] x : prerequisites) {
+            v.get(x[1]).add(x[0]);
+        }
+        for (int i = 0; i < numCourses; i++) {
+            if (vis[i] == 0 && detectCycle(v, i, rst, vis)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
