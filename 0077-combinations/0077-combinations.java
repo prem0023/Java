@@ -1,26 +1,35 @@
-class Solution {
-    public List<List<Integer>> combine(int n, int k) {
-        
-        List<List<Integer>> ans = new ArrayList<>();
-        List<Integer> subset = new ArrayList<>();
-        helper(1,n,0,k,ans,subset);
-        return ans;
-    }
-    void helper(int start, int n, int size,int k,List<List<Integer>> ans, List<Integer> subset)
-    {
-        if(start>n){
-            if(size==k){
-                ans.add(new ArrayList(subset));
+public class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+
+    void solve1(int num, int tot, int k, List<Integer> ans) {
+        if (num == tot + 1) {
+            if (ans.size() == k) {
+                res.add(new ArrayList<>(ans));
             }
             return;
         }
-        
-        //include
-        subset.add(start);
-        helper(start+1,n,size+1,k,ans,subset);
-        
-        //exclude
-        subset.remove(subset.size()-1);
-        helper(start+1,n,size,k,ans,subset);
+
+        ans.add(num);
+        solve1(num + 1, tot, k, ans);
+        ans.remove(ans.size() - 1);
+        solve1(num + 1, tot, k, ans);
+    }
+
+    void solve2(int num, int tot, int k, List<Integer> ans) {
+        if (ans.size() == k) {
+            res.add(new ArrayList<>(ans));
+            return;
+        }
+        for (int i = num; i <= tot; i++) {
+            ans.add(i);
+            solve2(i + 1, tot, k, ans);
+            ans.remove(ans.size() - 1);
+        }
+    }
+
+    public List<List<Integer>> combine(int n, int k) {
+        List<Integer> ans = new ArrayList<>();
+        solve2(1, n, k, ans);
+        return res;
     }
 }
