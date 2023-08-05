@@ -1,22 +1,44 @@
 class Solution {
-    public List<List<Integer>> combinationSum2(int[] cand, int target) {
-        Arrays.sort(cand);
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        List<Integer> path = new ArrayList<Integer>();
-        dfs_com(cand, 0, target, path, res);
-        return res;
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+        // HashSet<List<Integer>> set = new HashSet<>();
+        List<Integer> temp = new ArrayList<>();
+        Arrays.sort(candidates);
+        
+        helper(candidates, target, ans, temp, 0, 0);
+        // ans.addAll(set);
+        
+        return ans;
     }
-    void dfs_com(int[] cand, int cur, int target, List<Integer> path, List<List<Integer>> res) {
-        if (target == 0) {
-            res.add(new ArrayList(path));
-            return ;
+    
+    private static void helper(int[] candidates, int target, List<List<Integer>> ans, List<Integer> temp, int i, int sum){
+        if(sum == target){
+            ans.add(new ArrayList<>(temp));
+            return;
         }
-        if (target < 0) return;
-        for (int i = cur; i < cand.length; i++){
-            if (i > cur && cand[i] == cand[i-1]) continue;
-            path.add(path.size(), cand[i]);
-            dfs_com(cand, i+1, target - cand[i], path, res);
-            path.remove(path.size()-1);
+        
+        if(i >= candidates.length){
+            if(sum == target)
+                ans.add(new ArrayList<>(temp));
+            return;
         }
+        
+        if(sum + candidates[i] <= target){
+            temp.add(candidates[i]);
+            helper(candidates, target, ans, temp, i+1, sum + candidates[i]);
+            int a = temp.remove(temp.size()-1);
+            
+            while(i != candidates.length && candidates[i] == a)
+                i++;
+            
+            if(i != candidates.length)
+                i--;
+        }
+        else{
+            return;
+        }
+        
+        helper(candidates, target, ans, temp, i+1, sum);
+        
     }
 }
