@@ -13,31 +13,38 @@
  *     }
  * }
  */
-class Solution {
-    public List<TreeNode> generateTrees(int n) {
-        return generateSubtrees(1, n);
-    }
+public class Solution {
+    Map<Pair<Integer, Integer>, List<TreeNode>> m = new HashMap<>();
 
-    private List<TreeNode> generateSubtrees(int s, int e) {
-        List<TreeNode> res = new LinkedList<TreeNode>();
-        if (s > e) {
-            res.add(null); // empty tree
-            return res;
+    public List<TreeNode> solve(int start, int end) {
+        List<TreeNode> v = new ArrayList<>();
+        if (start > end) {
+            v.add(null);
+            return v;
         }
-
-        for (int i = s; i <= e; ++i) {
-            List<TreeNode> leftSubtrees = generateSubtrees(s, i - 1);
-            List<TreeNode> rightSubtrees = generateSubtrees(i + 1, e);
-
-            for (TreeNode left : leftSubtrees) {
-                for (TreeNode right : rightSubtrees) {
+        if (start == end) {
+            v.add(new TreeNode(start));
+            return v;
+        }
+        if (m.containsKey(new Pair<>(start, end)))
+            return m.get(new Pair<>(start, end));
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> l = solve(start, i - 1);
+            List<TreeNode> r = solve(i + 1, end);
+            for (TreeNode x : l) {
+                for (TreeNode x1 : r) {
                     TreeNode root = new TreeNode(i);
-                    root.left = left;
-                    root.right = right;
-                    res.add(root);
+                    root.left = x;
+                    root.right = x1;
+                    v.add(root);
                 }
             }
         }
-        return res;
+        m.put(new Pair<>(start, end), v);
+        return v;
+    }
+
+    public List<TreeNode> generateTrees(int n) {
+        return solve(1, n);
     }
 }
