@@ -1,105 +1,88 @@
-class Solution
-{
-    public String reorganizeString(String S) {
-        int[] hash = new int[26];
-        int max = 0, letter = 0;
-        for (int i = 0; i < S.length(); i++) {
-            hash[S.charAt(i) - 'a']++;
-        } 
-        
-        for (int i = 0; i < hash.length; i++) {
-            if (hash[i] > max) {
-                max = hash[i];
-                letter = i;
-            }
-        }
-        if (max > (S.length() + 1) / 2) {
-            return ""; 
-        }
-        char[] res = new char[S.length()];
-        int idx = 0;
-        while (hash[letter] > 0) {
-            res[idx] = (char) (letter + 'a');
-            idx += 2;
-            hash[letter]--;
-        }
-        for (int i = 0; i < hash.length; i++) {
-            while (hash[i] > 0) {
-                if (idx >= res.length) {
-                    idx = 1;
-                }
-                res[idx] = (char) (i + 'a');
-                idx += 2;
-                hash[i]--;
-            }
-        }
-        return String.valueOf(res);
-    }
-}
-
-
-/*
-Method - 2
-class Pair
-{
-    char ch;
-    int freq;
-    Pair(char _ch, int _freq){
-        this.ch = _ch;
-        this.freq = _freq;
-    }
-}
-
 class Solution {
     public String reorganizeString(String s) {
-        HashMap<Character, Integer> map = new HashMap<>();
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b) -> b.freq - a.freq);
-        int n = s.length();
-        String ans = "";
-        
-        for(int i=0; i<n; i++){
-            char ch = s.charAt(i);
-            int freq = map.getOrDefault(ch, 0);
-            map.put(ch, freq+1);
-            if(freq == (n+1)/2)
+        Map<Character, Integer> count = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            count.put(c, count.getOrDefault(c, 0) + 1);
+        }
+
+        List<int[]> maxHeap = new ArrayList<>();
+        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
+            maxHeap.add(new int[]{-entry.getValue(), entry.getKey()});
+        }
+        heapify(maxHeap);
+
+        int[] prev = null;
+        StringBuilder res = new StringBuilder();
+        while (!maxHeap.isEmpty() || prev != null) {
+            if (prev != null && maxHeap.isEmpty()) {
                 return "";
-        }
-        for(Map.Entry<Character, Integer> entry : map.entrySet()){
-            char ch = entry.getKey();
-            int freq = entry.getValue();
-            
-            pq.offer(new Pair(ch, freq));
-        }
-        
-        char ch1 = Character.MIN_VALUE;
-        int freq1 = 0;
-        char ch2 = Character.MIN_VALUE;
-        int freq2 = 0;
-        
-        while(!pq.isEmpty()){
-            ch1 = pq.peek().ch;
-            freq1 = pq.poll().freq;
-            if(!pq.isEmpty()){
-                ch2 = pq.peek().ch;
-                freq2 = pq.poll().freq;
             }
-            if(freq1 != 0){
-                ans = ans + "" + ch1;
-                freq1--;
+
+            int[] top = heapPop(maxHeap);
+            res.append((char) top[1]);
+            top[0]++;
+
+            if (prev != null) {
+                heapPush(maxHeap, prev);
+                prev = null;
             }
-            if(freq2 != 0){
-                ans = ans + "" + ch2;
-                freq2--;
+
+            if (top[0] != 0) {
+                prev = top;
             }
-            
-            if(freq1 != 0)
-                pq.offer(new Pair(ch1, freq1));
-            if(freq2 != 0)
-                pq.offer(new Pair(ch2, freq2));
         }
-        return ans;
+
+        return res.toString();
+    }
+
+    private void heapify(List<int[]> heap) {
+        int n = heap.size();
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapifyDown(heap, i);
+        }
+    }
+
+    private void heapifyDown(List<int[]> heap, int index) {
+        int n = heap.size();
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int largest = index;
+
+        if (left < n && heap.get(left)[0] < heap.get(largest)[0]) {
+            largest = left;
+        }
+        if (right < n && heap.get(right)[0] < heap.get(largest)[0]) {
+            largest = right;
+        }
+
+        if (largest != index) {
+            Collections.swap(heap, index, largest);
+            heapifyDown(heap, largest);
+        }
+    }
+
+    private int[] heapPop(List<int[]> heap) {
+        int n = heap.size();
+        int[] top = heap.get(0);
+        heap.set(0, heap.get(n - 1));
+        heap.remove(n - 1);
+        heapifyDown(heap, 0);
+        return top;
+    }
+
+    private void heapPush(List<int[]> heap, int[] element) {
+        heap.add(element);
+        heapifyUp(heap, heap.size() - 1);
+    }
+
+    private void heapifyUp(List<int[]> heap, int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+            if (heap.get(index)[0] >= heap.get(parent)[0]) {
+                break;
+            }
+            Collections.swap(heap, index, parent);
+            index = parent;
+        }
     }
 }
-// https://stackoverflow.com/questions/8534178/how-to-represent-empty-char-in-java-c haracter-class
-
-*/
