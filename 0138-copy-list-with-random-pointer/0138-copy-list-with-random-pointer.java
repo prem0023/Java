@@ -13,26 +13,25 @@ class Node {
 }
 */
 
-public class Solution {
+class Solution {
     public Node copyRandomList(Node head) {
-        HashMap<Node, Node> map = new HashMap<Node, Node>();
+        Map<Node, Node> hashMap = new HashMap<>();
+        Node cur = head;
 
-        //copy list nodes into hash table
-        Node p = head;
-        while(p != null){
-            map.put(p, new Node(p.val));
-            p = p.next;
+        while (cur != null) {
+            hashMap.put(cur, new Node(cur.val));
+            cur = cur.next;
         }
 
-        //deep copy using hash table
-        Node q = head;
-        while(q != null){
-            map.get(q).next = map.get(q.next);
-            map.get(q).random = map.get(q.random);
-            q = q.next;
+        cur = head;
+
+        while (cur != null) {
+            Node copy = hashMap.get(cur);
+            copy.next = hashMap.get(cur.next);
+            copy.random = hashMap.get(cur.random);
+            cur = cur.next;
         }
 
-        //return new head
-        return map.get(head);
+        return hashMap.get(head);        
     }
 }
