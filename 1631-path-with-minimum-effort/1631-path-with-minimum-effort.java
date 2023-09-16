@@ -1,67 +1,43 @@
-class Pair
-{
-    int dist;
-    int[] src;
-    Pair(int dist, int[] src){
-        this.dist = dist;
-        this.src = src;
-    }
-}
-
 class Solution {
-    public int minimumEffortPath(int[][] grid) {
-        PriorityQueue<Pair> pq = new PriorityQueue<>((x,y) -> x.dist - y.dist);
-        int n = grid.length;
-        int m =  grid[0].length;
-        int[][] ans = new int[n][m];
-        
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                ans[i][j] = Integer.MAX_VALUE;
+    int[][] vis = new int[105][105];
+    int[][] dir = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+
+    void ok(int x, int y, int mid, int[][] heights) {
+        if (vis[x][y] == 0) {
+            vis[x][y] = 1;
+            int n = heights.length;
+            int m = heights[0].length;
+
+            for (int i = 0; i < 4; i++) {
+                int X = x + dir[i][0];
+                int Y = y + dir[i][1];
+
+                if (X < 0 || X >= n || Y < 0 || Y >= m)
+                    continue;
+
+                if (Math.abs(heights[x][y] - heights[X][Y]) <= mid)
+                    ok(X, Y, mid, heights);
             }
         }
-        int[] src = {0,0};
-        ans[0][0] = 0;
-        pq.add(new Pair(0, src));
-        
-        while(!pq.isEmpty()){
-            int dist = pq.peek().dist;
-            int i = pq.peek().src[0];
-            int j = pq.poll().src[1];
-            int[] temp;
-            
-            if(i == n-1 && j == m-1)
-                return ans[n-1][m-1];
-            
-            if(i>0 && ans[i-1][j] > Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i-1][j]))){
-                ans[i-1][j] = Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i-1][j]));
-                temp = new int[2];
-                temp[0] = i-1;
-                temp[1] = j;
-                pq.offer(new Pair(ans[i-1][j], temp));
-            }
-            if(i+1<n && ans[i+1][j] > Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i+1][j]))){
-                ans[i+1][j] = Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i+1][j]));
-                temp = new int[2];
-                temp[0] = i+1;
-                temp[1] = j;
-                pq.offer(new Pair(ans[i+1][j], temp));
-            }
-            if(j>0 && ans[i][j-1] > Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i][j-1]))){
-                ans[i][j-1] = Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i][j-1]));
-                temp = new int[2];
-                temp[0] = i;
-                temp[1] = j-1;
-                pq.offer(new Pair(ans[i][j-1], temp));
-            }
-            if(j+1<m && ans[i][j+1] > Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i][j+1]))){
-                ans[i][j+1] = Math.max(ans[i][j],Math.abs(grid[i][j]-grid[i][j+1]));
-                temp = new int[2];
-                temp[0] = i;
-                temp[1] = j+1;
-                pq.offer(new Pair(ans[i][j+1], temp));
-            }
+    }
+
+    public int minimumEffortPath(int[][] heights) {
+        int l = 0;
+        int r = 1000000002;
+        int n = heights.length;
+        int m = heights[0].length;
+
+        while (l < r) {
+            int mid = (l + r) / 2;
+            vis = new int[105][105];
+            ok(0, 0, mid, heights);
+
+            if (vis[n - 1][m - 1] == 1)
+                r = mid;
+            else
+                l = mid + 1;
         }
-        return -1;
+
+        return l;
     }
 }
