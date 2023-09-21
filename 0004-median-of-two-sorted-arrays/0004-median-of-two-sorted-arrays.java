@@ -1,23 +1,52 @@
 class Solution {
-    public double findMedianSortedArrays(int[] A, int[] B) {
-            int m = A.length, n = B.length;
-            int l = (m + n + 1) / 2;
-            int r = (m + n + 2) / 2;
-            return (getkth(A, 0, B, 0, l) + getkth(A, 0, B, 0, r)) / 2.0;
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Ensure nums1 is the smaller array
+        if (nums1.length > nums2.length) {
+            int[] temp = nums1;
+            nums1 = nums2;
+            nums2 = temp;
         }
 
-    public double getkth(int[] A, int aStart, int[] B, int bStart, int k) {
-        if (aStart > A.length - 1) return B[bStart + k - 1];            
-        if (bStart > B.length - 1) return A[aStart + k - 1];                
-        if (k == 1) return Math.min(A[aStart], B[bStart]);
+        // Get the lengths of the two arrays
+        int len1 = nums1.length;
+        int len2 = nums2.length;
 
-        int aMid = Integer.MAX_VALUE, bMid = Integer.MAX_VALUE;
-        if (aStart + k/2 - 1 < A.length) aMid = A[aStart + k/2 - 1]; 
-        if (bStart + k/2 - 1 < B.length) bMid = B[bStart + k/2 - 1];        
+        // Set the range for binary search on nums1
+        int left = 0;
+        int right = len1;
 
-        if (aMid < bMid) 
-            return getkth(A, aStart + k/2, B, bStart,       k - k/2);// Check: aRight + bLeft 
-        else 
-            return getkth(A, aStart,       B, bStart + k/2, k - k/2);// Check: bRight + aLeft
+        while (left <= right) {
+            // Partition nums1 and nums2
+            int partition1 = (left + right) / 2;
+            int partition2 = (len1 + len2 + 1) / 2 - partition1;
+
+            // Find the maximum elements on the left of the partition
+            int maxLeft1 = partition1 > 0 ? nums1[partition1 - 1] : Integer.MIN_VALUE;
+            int maxLeft2 = partition2 > 0 ? nums2[partition2 - 1] : Integer.MIN_VALUE;
+            int maxLeft = Math.max(maxLeft1, maxLeft2);
+
+            // Find the minimum elements on the right of the partition
+            int minRight1 = partition1 < len1 ? nums1[partition1] : Integer.MAX_VALUE;
+            int minRight2 = partition2 < len2 ? nums2[partition2] : Integer.MAX_VALUE;
+            int minRight = Math.min(minRight1, minRight2);
+
+            // Check if the partition is correct
+            if (maxLeft <= minRight) {
+                // If the total length is even, return the average of the two middle elements
+                if ((len1 + len2) % 2 == 0) {
+                    return (maxLeft + minRight) / 2.0;
+                }
+                // If the total length is odd, return the middle element
+                else {
+                    return maxLeft;
+                }
+            } else if (maxLeft1 > minRight2) {
+                right = partition1 - 1;
+            } else {
+                left = partition1 + 1;
+            }
+        }
+
+        return 0.0; // This should not be reached, just to satisfy Java's return requirements
     }
 }
