@@ -7,8 +7,9 @@ class Solution {
         }
         
         for(List<String> list : paths){
-            if(set.add(list.get(1)))
-                return list.get(1);
+            String dest = list.get(1);
+            if(set.add(dest))
+                return dest;
         }
         
         return "-1";
