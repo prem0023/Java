@@ -1,27 +1,28 @@
 class Solution {
     public int minSteps(String s, String t) {
-        int[] sArray = new int[26];
-        int[] tArray = new int[26];
-        int ans = 0;
-        
-        for(int i=0; i<s.length(); i++){
-            sArray[s.charAt(i) - 'a']++;
+        Map<Character, Integer> smp = new HashMap<>();
+        Map<Character, Integer> tmp = new HashMap<>();
+        int cnt = 0;
+
+        for (char a : s.toCharArray()) {
+            smp.put(a, smp.getOrDefault(a, 0) + 1);
         }
-        
-        for(int i=0; i<t.length(); i++){
-            tArray[t.charAt(i) - 'a']++;
+
+        for (char a : t.toCharArray()) {
+            tmp.put(a, tmp.getOrDefault(a, 0) + 1);
         }
-        
-        for(int i=0; i<26; i++){
-            if(sArray[i] <= tArray[i])
-                continue;
-            
-            ans += (sArray[i] - tArray[i]);
+
+        for (Map.Entry<Character, Integer> entry : smp.entrySet()) {
+            char key = entry.getKey();
+            if (tmp.containsKey(key)) {
+                if (entry.getValue().equals(tmp.get(key))) {
+                    cnt += entry.getValue();
+                } else {
+                    cnt += Math.min(entry.getValue(), tmp.get(key));
+                }
+            }
         }
-        
-        // System.out.println("sArray: " + Arrays.toString(sArray));
-        // System.out.println("tArray: " + Arrays.toString(tArray));
-        
-        return ans;
+
+        return s.length() - cnt;
     }
 }
