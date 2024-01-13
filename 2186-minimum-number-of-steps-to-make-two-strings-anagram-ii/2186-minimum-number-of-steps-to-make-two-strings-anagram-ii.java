@@ -1,20 +1,23 @@
 class Solution {
     public int minSteps(String s, String t) {
-        int[] count = new int[26];
-        byte[] sb = s.getBytes(), tb = t.getBytes();
-        
-        System.out.println(Arrays.toString(sb));
-        
-        for (byte b : sb) {
-          count[b - 'a']++;
+        int[] charFreq = new int[26];
+
+        for(char cur: s.toCharArray()) {
+            charFreq[cur-'a']++;
         }
-        for (byte b : tb) {
-          count[b - 'a']--;
+
+        for(char cur: t.toCharArray()) {
+            charFreq[cur-'a']--;
         }
-        int res = 0;
-        for (int i : count) {
-          res += Math.abs(i);
+
+        int minSteps = 0;
+
+        for(int idx=0; idx < 26; idx++) {
+            if (charFreq[idx] != 0) {
+                minSteps += Math.abs(charFreq[idx]);
+            }
         }
-        return res;
+
+        return minSteps;
     }
 }
