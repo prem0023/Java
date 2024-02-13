@@ -9,6 +9,9 @@ class Solution {
     }
     
     private boolean isPalindrome(String s){
+        if(s== null || s.length() == 0)
+            return false;
+            
         int n = s.length();
         
         for(int i=0; i<n/2; i++){
