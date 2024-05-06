@@ -18,7 +18,6 @@ class Solution {
             int data = curr.val;
             
             while(!stack.isEmpty() && stack.peek() < data){
-                System.out.println(stack.peek() + " " + data);
                 stack.pop();
             }
             
@@ -26,7 +25,6 @@ class Solution {
             curr = curr.next;
         }
         
-        System.out.println(stack);
         head = null;
         
         while(!stack.isEmpty()){
