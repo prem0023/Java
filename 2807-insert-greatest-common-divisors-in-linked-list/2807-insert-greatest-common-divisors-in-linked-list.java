@@ -25,8 +25,13 @@ class Solution {
     
     static int findGCD(int a, int b)   
     {   
-        if (b == 0)   
-            return a;     
-        return findGCD(b, a % b);   
+        while(b != 0)  
+        {  
+            int temp = b;  
+            b = a % b;  
+            a = temp;  
+        }
+        return a;
+        
     }  
 }
