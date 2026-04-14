@@ -7,14 +7,11 @@ class Solution {
         for(int i=1; i<numRows; i++){
             List<Integer> list = new ArrayList<>();
             for(int j=0; j<=i; j++){
-                int value = 0;
-                if(j-1 >= 0){
-                    value += pascalTriangle.get(i-1).get(j-1);
+                if(j == 0 || j == i){
+                    list.add(1);
+                } else{
+                    list.add(pascalTriangle.get(i-1).get(j-1) + pascalTriangle.get(i-1).get(j));
                 }
-                if(j < i){
-                    value += pascalTriangle.get(i-1).get(j);
-                }
-                list.add(value);
             }
             pascalTriangle.add(list);
         }
